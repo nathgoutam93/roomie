@@ -11,6 +11,7 @@ import Animated, {
   interpolate,
   runOnJS,
   useAnimatedGestureHandler,
+  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -53,22 +54,10 @@ const SwipableProfileCard = ({
   onSwipeLeft,
   onSwipeRight,
 }: props) => {
+  // const [scorllHeight, setScrollHeight] = useState(0);
+
   const translateX = useSharedValue(0);
-
-  const [scorllHeight, setScrollHeight] = useState(0);
-  const scrollPosition = useSharedValue(0);
-
-  const scrollTrackOffsetAnimation = useAnimatedStyle(() => {
-    const scrollTrackOffset = interpolate(
-      scrollPosition.value,
-      [0, scorllHeight],
-      [0, SCROLLBAR_HEIGHT - SCROLLTRACK_HEIGHT]
-    );
-
-    return {
-      top: scrollTrackOffset,
-    };
-  });
+  // const scrollPosition = useSharedValue(0);
 
   const onPanGesture = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
@@ -105,7 +94,11 @@ const SwipableProfileCard = ({
     },
   });
 
-  const rStyle = useAnimatedStyle(() => {
+  // const scrollHandler = useAnimatedScrollHandler((event) => {
+  //   scrollPosition.value = event.contentOffset.y;
+  // });
+
+  const cardSwipeAnimation = useAnimatedStyle(() => {
     const rotationRange = [-15, 0, 15];
 
     const rotation = interpolate(translateX.value, SNAP_POINTS, rotationRange);
@@ -118,6 +111,18 @@ const SwipableProfileCard = ({
     };
   });
 
+  // const scrollTrackOffsetAnimation = useAnimatedStyle(() => {
+  //   const scrollTrackOffset = interpolate(
+  //     scrollPosition.value,
+  //     [0, scorllHeight],
+  //     [0, SCROLLBAR_HEIGHT - SCROLLTRACK_HEIGHT]
+  //   );
+
+  //   return {
+  //     top: scrollTrackOffset,
+  //   };
+  // });
+
   return (
     <PanGestureHandler
       enabled={index === 0}
@@ -125,25 +130,27 @@ const SwipableProfileCard = ({
       activeOffsetX={[-10, 10]}
     >
       <Animated.View
-        style={[styles.container, { zIndex: totalItems - index }, rStyle]}
+        style={[
+          styles.container,
+          { zIndex: totalItems - index },
+          cardSwipeAnimation,
+        ]}
       >
-        <ScrollView
+        <Animated.ScrollView
           style={{ flex: 1 }}
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={16}
-          onContentSizeChange={(height) => {
-            setScrollHeight(height);
-          }}
-          onLayout={({
-            nativeEvent: {
-              layout: { height },
-            },
-          }) => {
-            setScrollHeight(height);
-          }}
-          onScroll={(ev) => {
-            scrollPosition.value = ev.nativeEvent.contentOffset.y;
-          }}
+          // onContentSizeChange={(width, height) => {
+          //   setScrollHeight(height);
+          // }}
+          // onLayout={({
+          //   nativeEvent: {
+          //     layout: { height },
+          //   },
+          // }) => {
+          //   setScrollHeight(height);
+          // }}
+          // onScroll={scrollHandler}
         >
           <View
             style={{
@@ -282,8 +289,8 @@ const SwipableProfileCard = ({
               ))}
             </View>
           </View>
-        </ScrollView>
-        <View
+        </Animated.ScrollView>
+        {/* <View
           style={{
             position: "absolute",
             top: 40,
@@ -305,7 +312,7 @@ const SwipableProfileCard = ({
               scrollTrackOffsetAnimation,
             ]}
           />
-        </View>
+        </View> */}
       </Animated.View>
     </PanGestureHandler>
   );
@@ -326,6 +333,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
+    height: "100%",
     resizeMode: "cover",
   },
   details: {
@@ -366,7 +374,7 @@ const styles = StyleSheet.create({
   tag: {
     margin: 4,
     alignSelf: "flex-start",
-    backgroundColor: Colors.light.accent,
+    backgroundColor: Colors.light.secondaryAccent,
     borderRadius: 32,
     paddingVertical: 8,
     paddingHorizontal: 16,

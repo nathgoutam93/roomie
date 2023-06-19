@@ -1,19 +1,12 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-} from "react-native";
+import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import React, { useState } from "react";
 import Animated, {
   interpolate,
+  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
 
-// import { userWithaddress } from "../../constants/fakeData";
 import Colors from "../../constants/Colors";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { user } from "../../contexts/AppwriteContext";
@@ -33,6 +26,10 @@ const ProfileCard = ({ user }: props) => {
   const [scorllHeight, setScrollHeight] = useState(0);
   const scrollPosition = useSharedValue(0);
 
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    scrollPosition.value = event.contentOffset.y;
+  });
+
   const scrollTrackOffsetAnimation = useAnimatedStyle(() => {
     const scrollTrackOffset = interpolate(
       scrollPosition.value,
@@ -47,11 +44,11 @@ const ProfileCard = ({ user }: props) => {
 
   return (
     <View style={[styles.container]}>
-      <ScrollView
+      <Animated.ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
-        onContentSizeChange={(height) => {
+        onContentSizeChange={(width, height) => {
           setScrollHeight(height);
         }}
         onLayout={({
@@ -61,9 +58,7 @@ const ProfileCard = ({ user }: props) => {
         }) => {
           setScrollHeight(height);
         }}
-        onScroll={(ev) => {
-          scrollPosition.value = ev.nativeEvent.contentOffset.y;
-        }}
+        onScroll={scrollHandler}
       >
         <View
           style={{
@@ -205,7 +200,7 @@ const ProfileCard = ({ user }: props) => {
             ))}
           </View>
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
       <View
         style={{
           position: "absolute",
@@ -237,14 +232,13 @@ export default ProfileCard;
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    backgroundColor: Colors.light.secondary,
-    borderRadius: 32,
-    overflow: "hidden",
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
+    overflow: "hidden",
     borderWidth: 1,
+    borderRadius: 32,
     borderColor: Colors.light.text,
+    backgroundColor: Colors.light.secondary,
   },
   image: {
     width: "100%",
@@ -289,7 +283,7 @@ const styles = StyleSheet.create({
   tag: {
     margin: 4,
     alignSelf: "flex-start",
-    backgroundColor: Colors.light.accent,
+    backgroundColor: Colors.light.secondaryAccent,
     borderRadius: 32,
     paddingVertical: 8,
     paddingHorizontal: 16,

@@ -45,7 +45,7 @@ const DashboardLayout = () => {
           borderTopColor: Colors.light.primary,
           elevation: 0,
         },
-        tabBarActiveTintColor: Colors.light.secondaryAccent,
+        tabBarActiveTintColor: Colors.light.text,
       }}
     >
       <Tabs.Screen

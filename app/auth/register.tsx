@@ -35,13 +35,13 @@ const RegisterScreen = () => {
         password: string().min(8, {
           message: "password must be atleast 8 characeters.",
         }),
-        username: string().min(3, "username must be atleast 3 characters."),
+        // username: string().min(3, "username must be atleast 3 characters."),
       })
     ),
     defaultValues: {
       email: "",
       password: "",
-      username: "",
+      // username: "",
     },
   });
 
@@ -53,7 +53,6 @@ const RegisterScreen = () => {
       const session = await appwrite.createAccount({
         email: data.email,
         password: data.password,
-        name: data.username,
       });
       setSession(session);
       Toast.show({
@@ -101,7 +100,7 @@ const RegisterScreen = () => {
             marginTop: 16,
           }}
         >
-          <Controller
+          {/* <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
@@ -129,7 +128,7 @@ const RegisterScreen = () => {
             >
               {errors.username?.message?.toString()}
             </Text>
-          )}
+          )} */}
 
           <Controller
             control={control}

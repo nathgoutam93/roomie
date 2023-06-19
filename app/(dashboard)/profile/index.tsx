@@ -14,9 +14,7 @@ const ProfileScreen = () => {
   if (!user) <SplashScreen />;
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text
           style={{
@@ -34,7 +32,13 @@ const ProfileScreen = () => {
           </Pressable>
         </View>
       </View>
-      <View style={styles.container}>
+      <View
+        style={{
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         {user && <ProfileCard user={user} />}
       </View>
       <View style={{ width: "100%", padding: 16 }}>
@@ -98,6 +102,12 @@ const ProfileScreen = () => {
 export default ProfileScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.light.primary,
+  },
   header: {
     width: "100%",
     flexDirection: "row",
@@ -106,12 +116,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 32,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: Colors.light.primary,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
   },
 });

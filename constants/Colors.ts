@@ -1,9 +1,9 @@
 export default {
   light: {
-    text: "#000",
-    primary: "#fff",
-    secondary: "#ffffda",
-    accent: "#F5F0BB",
-    secondaryAccent: "#DCD8A8",
+    text: "#121619",
+    primary: "#fefeFF",
+    secondary: "#fdfbba",
+    secondaryAccent: "#fbf874",
+    accent: "#f8f32b",
   },
 };

@@ -10,12 +10,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SwipableProfileCard from "../../../components/explorer/SwipableProfilecard";
 
 import { data, fetchUsers, userWithaddress } from "../../../constants/fakeData";
+import { StatusBar } from "expo-status-bar";
 
 const MIN_CARD = 4;
 const MAX_UNDO_ITEMS = 5;
 
 const ExploreScreen = () => {
-  const [possibleMatches, setPossibleMatches] = useState<userWithaddress[]>([]); // const [currentPossibleMatch, setCurrentPossibleMatch] = useState(0);
+  const [possibleMatches, setPossibleMatches] = useState<userWithaddress[]>([]);
   const [undoStack, setUndoStack] = useState<userWithaddress[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -82,53 +83,56 @@ const ExploreScreen = () => {
   }, [getUser]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.header}>
-        <Text
-          style={{
-            fontFamily: "cherry",
-            fontSize: 32,
-            color: Colors.light.text,
-          }}
-        >
-          Roomie
-        </Text>
+    <>
+      <StatusBar backgroundColor={Colors.light.primary} />
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.header}>
+          <Text
+            style={{
+              fontFamily: "cherry",
+              fontSize: 32,
+              color: Colors.light.text,
+            }}
+          >
+            Roomie
+          </Text>
 
-        <View style={{ flexDirection: "row" }}>
-          {undoStack.length > 0 && (
-            <Pressable onPress={handleUndo} style={{ marginHorizontal: 6 }}>
-              <Ionicons name="arrow-undo-outline" size={24} color="black" />
+          <View style={{ flexDirection: "row" }}>
+            {undoStack.length > 0 && (
+              <Pressable onPress={handleUndo} style={{ marginHorizontal: 6 }}>
+                <Ionicons name="arrow-undo-outline" size={24} color="black" />
+              </Pressable>
+            )}
+            <Pressable onPress={() => {}} style={{ marginHorizontal: 6 }}>
+              <Ionicons name="filter-outline" size={24} color="black" />
             </Pressable>
-          )}
-          <Pressable onPress={() => {}} style={{ marginHorizontal: 6 }}>
-            <Ionicons name="filter-outline" size={24} color="black" />
-          </Pressable>
+          </View>
         </View>
-      </View>
-      <View style={styles.container}>
-        {possibleMatches.length > 0 ? (
-          possibleMatches.map((user, index) => {
-            return (
-              <SwipableProfileCard
-                key={user.id}
-                user={user}
-                index={index}
-                totalItems={data.length}
-                onSwipeLeft={handleSwipeLeft}
-                onSwipeRight={handleSwipeRight}
-              />
-            );
-          })
-        ) : loading ? (
-          <LoadingCard />
-        ) : (
-          <InfoCard
-            title="That's everyone!"
-            subtitle={`You've seen all the people nearby.\nChange your filters or check later.`}
-          />
-        )}
-      </View>
-    </SafeAreaView>
+        <View style={styles.container}>
+          {possibleMatches.length > 0 ? (
+            possibleMatches.map((user, index) => {
+              return (
+                <SwipableProfileCard
+                  key={user.id}
+                  user={user}
+                  index={index}
+                  totalItems={data.length}
+                  onSwipeLeft={handleSwipeLeft}
+                  onSwipeRight={handleSwipeRight}
+                />
+              );
+            })
+          ) : loading ? (
+            <LoadingCard />
+          ) : (
+            <InfoCard
+              title="That's everyone!"
+              subtitle={`You've seen all the people nearby.\nChange your filters or check later.`}
+            />
+          )}
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
 

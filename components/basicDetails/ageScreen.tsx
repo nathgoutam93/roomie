@@ -51,7 +51,7 @@ const AgeScreen = ({
   return (
     <View style={styles.container}>
       <Text style={{ fontFamily: "cherry", fontSize: 32, marginVertical: 32 }}>
-        {`What's \nyour first name?`}
+        {`What's Your\ndate of birth?`}
       </Text>
 
       <View

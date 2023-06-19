@@ -26,7 +26,6 @@ const appwriteClient = new Client()
 type CreateUserAccount = {
   email: string;
   password: string;
-  name: string;
 };
 
 type LoginUserAccount = {
@@ -45,13 +44,12 @@ class AppwriteService {
     this.storage = new Storage(appwriteClient);
   }
 
-  async createAccount({ email, password, name }: CreateUserAccount) {
+  async createAccount({ email, password }: CreateUserAccount) {
     try {
       const userAccount = await this.account.create(
         ID.unique(),
         email,
-        password,
-        name
+        password
       );
 
       if (userAccount) {
@@ -111,16 +109,14 @@ class AppwriteService {
 
       const { age, gender, genderPreference, image, username } = data;
 
-      const image_id = await this.uploadImage(image);
+      const public_url = await this.uploadImage(image);
 
-      console.log(image_id);
-
-      if (image_id) {
+      if (public_url) {
         const userData = {
           name: username,
           age: age,
           gender: gender,
-          profile_pic_url: image_id.$id,
+          profile_pic_url: public_url,
           preferred_gender: [genderPreference],
         };
 

@@ -54,7 +54,7 @@ const Onboarding = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        await AsyncStorage.clear(); // JUST FOR DEVELOPEMNT
+        // await AsyncStorage.clear(); // JUST FOR DEVELOPEMNT
 
         const value = await AsyncStorage.getItem("is_launched");
         if (value !== null) {
